@@ -42,6 +42,13 @@ app.get("/", checker_middleware, (req, res) => {
   res.status(200).json({ token: token });
 });
 
+app.get("/signin", (req, res) => {
+  const token = req.headers.authorization;
+  const decryted_token = jwt.verify(token, process.env.JSON_WEB_TOKEN);
+  if (decryted_token) {
+    res.json({ Server: "All good" });
+  }
+});
 app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
