@@ -1,6 +1,5 @@
 const express = require("express");
 const z = require("zod");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const app = express();
@@ -49,6 +48,7 @@ app.get("/signin", (req, res) => {
     res.json({ Server: "All good" });
   }
 });
+
 app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
