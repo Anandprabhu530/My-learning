@@ -16,9 +16,10 @@ app.get("/sign-in", (req, res) => {
   res.status(200).json({ msg: "All Ok" });
 });
 
-app.get("/sign-up",async(req,res)=>{
+app.get("/signup",async(req,res)=>{
   //check if user exists
-  const Userexists = await mongoose.findOne({email:String})
+  console.log(req.body)
+  const Userexists = await mongoose.find({email:req.body.email})
   if(Userexists){
     res.status(400).json({Server:"User already exists. Please Login!"})
   }
@@ -31,5 +32,5 @@ app.get("/sign-up",async(req,res)=>{
 })
 
 app.listen(3000, () => {
-  console.log("Hello World");
+  console.log("Listening on port 3000");
 });
