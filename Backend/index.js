@@ -2,12 +2,11 @@ const express = require("express");
 const app = express();
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const { User } = require("./schema");
 require("dotenv").config();
 
 app.use(express.json());
 mongoose.connect(process.env.MONGO_DB_URL);
-
-const User = mongoose.model("User", { email: String, password: String });
 
 app.get("/sign-in", (req, res) => {
   const token = req.headers.authorization;
