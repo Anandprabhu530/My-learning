@@ -1,5 +1,13 @@
+import Login from "../components/Login";
+import SignUp from "../components/SignUp";
+
 const App = () => {
-  return <div>Hello World</div>;
+  return (
+    <div>
+      <SignUp />
+      <Login />
+    </div>
+  );
 };
 
 export default App;
