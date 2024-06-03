@@ -3,10 +3,13 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+
 require("dotenv").config();
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
 mongoose.connect(process.env.MONGO_DB_URL);
 
 const User = mongoose.model("User", { email: String, password: String });
@@ -22,7 +25,7 @@ const logged_in_check = (req, res, next) => {
     return;
   }
 };
-app.get("/sign-in", logged_in_check, (req, res) => {
+app.post("/sign-in", (req, res) => {
   res.status(200).json({ server: "Your Email and password is correct." });
 });
 
@@ -45,8 +48,13 @@ app.post("/signup", async (req, res) => {
     req.body.email + "" + req.body.password,
     process.env.JSON_WEB_TOKEN
   );
-  res.cookie("authorization", token);
-  res.status(200).json({ Server: "token generation successfull" });
+
+  const cookieOptions = {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60,
+  };
+  res.cookie("authorization", token, cookieOptions);
+  res.status(200).json({ authorization: token });
 });
 
 app.listen(3000, () => {

@@ -11,7 +11,7 @@ const SignUp = () => {
       headers: { "Content-Type": "application/json" },
     });
     if (res.ok) {
-      console.log("All good");
+      console.log("Completed Sign Up");
     }
   };
   const handleChange = (event) => {

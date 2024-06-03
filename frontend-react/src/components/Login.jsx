@@ -2,9 +2,17 @@ import { useState } from "react";
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(data);
+    const res = await fetch("http://localhost:3000/sign-in", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+    });
+    if (res.ok) {
+      console.log("Successfull");
+    }
   };
   const handleChange = (event) => {
     event.preventDefault();
