@@ -1,12 +1,16 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const { User } = require("./schema");
 require("dotenv").config();
 
 app.use(express.json());
+app.use(cors());
 mongoose.connect(process.env.MONGO_DB_URL);
+
+const User = mongoose.model("User", { email: String, password: String });
+const data = mongoose.model("Data", { field1: String, filed2: String });
 
 const logged_in_check = (req, res, next) => {
   const token = req.headers.authorization;
@@ -26,7 +30,7 @@ app.get("/dashboard", logged_in_check, (req, res) => {
   res.status(200).json({ server: "Dashboard page" });
 });
 
-app.get("/signup", async (req, res) => {
+app.post("/signup", async (req, res) => {
   //check if user exists
   const Userexists = await User.findOne({ email: req.body.email });
   if (Userexists) {
@@ -41,7 +45,8 @@ app.get("/signup", async (req, res) => {
     req.body.email + "" + req.body.password,
     process.env.JSON_WEB_TOKEN
   );
-  res.status(200).json({ token: token });
+  res.cookie("authorization", token);
+  res.status(200).json({ Server: "token generation successfull" });
 });
 
 app.listen(3000, () => {
