@@ -2,9 +2,17 @@ import { useState } from "react";
 
 const SignUp = () => {
   const [data, setData] = useState({ email: "", password: "" });
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(data);
+    const res = await fetch("http://localhost:3000/signup", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+    });
+    if (res.ok) {
+      console.log("All good");
+    }
   };
   const handleChange = (event) => {
     event.preventDefault();
