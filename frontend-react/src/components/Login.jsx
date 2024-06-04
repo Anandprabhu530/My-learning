@@ -1,23 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(data);
     const res = await fetch("http://localhost:3000/sign-in", {
       method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        body: JSON.stringify(data),
+        authorization: localStorage.getItem("authorization"),
+      },
     });
+    console.log(res);
     if (res.ok) {
       console.log("Successfull");
+      navigate("/signup");
     }
   };
   const handleChange = (event) => {
     event.preventDefault();
     setData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("authorization")) {
+      const res = async () => {
+        console.log("Inside");
+        const response = await fetch("http://localhost:3000/sign-in", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            authorization: localStorage.getItem("authorization"),
+          },
+        });
+        if (response.ok) {
+          console.log("Successfull");
+          navigate("/signup");
+        }
+      };
+      res();
+    }
+  }, []);
 
   return (
     <div className="bg-black h-screen w-full flex items-center justify-center">

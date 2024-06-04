@@ -15,17 +15,20 @@ mongoose.connect(process.env.MONGO_DB_URL);
 const User = mongoose.model("User", { email: String, password: String });
 const data = mongoose.model("Data", { field1: String, filed2: String });
 
-const logged_in_check = (req, res, next) => {
+const logged_in_check = async (req, res, next) => {
   const token = req.headers.authorization;
-  try {
-    const decrypted_token = jwt.verify(token, process.env.JSON_WEB_TOKEN);
-    if (decrypted_token) next();
-  } catch (error) {
-    res.status(400).json({ server: "Something is up..." });
-    return;
-  }
+  // if (token) {
+  //   const decrypted_token = jwt.verify(token, process.env.JSON_WEB_TOKEN);
+  //   if (decrypted_token) next();
+  //   else res.status(400).json({ server: "Something is up..." });
+  //   return;
+  // } else {
+  const key_ans = await User.findOne({ email: req.body.email });
+  console.log(key_ans.password);
+  res.status(200).json({ server: "all good" });
+  // }
 };
-app.post("/sign-in", (req, res) => {
+app.post("/sign-in", logged_in_check, (req, res) => {
   res.status(200).json({ server: "Your Email and password is correct." });
 });
 
