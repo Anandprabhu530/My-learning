@@ -11,7 +11,8 @@ const SignUp = () => {
       headers: { "Content-Type": "application/json" },
     });
     if (res.ok) {
-      console.log("Completed Sign Up");
+      const response = await res.json();
+      localStorage.setItem("authorization", response.authorization);
     }
   };
   const handleChange = (event) => {

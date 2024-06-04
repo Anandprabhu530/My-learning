@@ -49,11 +49,8 @@ app.post("/signup", async (req, res) => {
     process.env.JSON_WEB_TOKEN
   );
 
-  const cookieOptions = {
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60,
-  };
-  res.cookie("authorization", token, cookieOptions);
+  res.setHeader("Content-Type", "application/json");
+  res.cookie("authorization", token);
   res.status(200).json({ authorization: token });
 });
 
