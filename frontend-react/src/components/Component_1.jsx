@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import Component_2 from "./Component_2";
 import { Singlecount } from "../store/atoms/count";
 
